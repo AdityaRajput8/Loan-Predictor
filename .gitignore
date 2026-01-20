@@ -1,0 +1,16 @@
+# Ignore the virtual environment
+venv/
+.venv/
+
+# Ignore compiled python files
+__pycache__/
+*.pyc
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Optional: Ignore the dataset if it's huge (keep it if it's small)
+# data/

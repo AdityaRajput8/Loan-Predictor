@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Prediction AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .header-title { color: #2c3e50; font-weight: bold; }
+        .result-box { margin-top: 20px; padding: 15px; border-radius: 10px; font-weight: bold; text-align: center;}
+        .result-safe { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .result-risk { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card p-4">
+                <h2 class="text-center header-title mb-4">💰 Loan Repayment Predictor</h2>
+                <p class="text-center text-muted">Enter applicant details to assess credit risk.</p>
+                
+                <form action="/" method="POST">
+                    
+                    <h5 class="text-primary mt-3">👤 Personal Info</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label>Age</label>
+                            <input type="number" name="age" class="form-control" required value="30">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Gender</label>
+                            <select name="gender" class="form-select">
+                                <option value="1">Male</option>
+                                <option value="0">Female</option>
+                                <option value="2">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Marital Status</label>
+                            <select name="marital" class="form-select">
+                                <option value="1">Married</option>
+                                <option value="2">Single</option>
+                                <option value="0">Divorced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h5 class="text-primary mt-3">💳 Financial Status</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label>Annual Income ($)</label>
+                            <input type="number" name="annual_income" class="form-control" value="60000">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Monthly Income ($)</label>
+                            <input type="number" name="monthly_income" class="form-control" value="5000">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Credit Score</label>
+                            <input type="number" name="credit_score" class="form-control" value="700">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Education Level</label>
+                            <select name="education" class="form-select">
+                                <option value="1">Bachelor's</option>
+                                <option value="4">Master's</option>
+                                <option value="3">High School</option>
+                                <option value="0">Associate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Employment Status</label>
+                            <select name="employment" class="form-select">
+                                <option value="0">Employed</option>
+                                <option value="2">Self-Employed</option>
+                                <option value="3">Unemployed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="dti" value="0.3">
+                    <input type="hidden" name="loan_amount" value="15000">
+                    <input type="hidden" name="loan_purpose" value="1">
+                    <input type="hidden" name="interest_rate" value="10.0">
+                    <input type="hidden" name="loan_term" value="36">
+                    <input type="hidden" name="installment" value="450">
+                    <input type="hidden" name="grade" value="1">
+                    <input type="hidden" name="open_acc" value="5">
+                    <input type="hidden" name="total_limit" value="20000">
+                    <input type="hidden" name="current_balance" value="5000">
+                    <input type="hidden" name="delinq_hist" value="0">
+                    <input type="hidden" name="public_records" value="0">
+                    <input type="hidden" name="num_delinq" value="0">
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">🚀 Predict Risk</button>
+                    </div>
+
+                </form>
+
+                {% if prediction_result %}
+                    <div class="result-box {% if 'Approved' in prediction_result %}result-safe{% else %}result-risk{% endif %}">
+                        <h3>{{ prediction_result }}</h3>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
