@@ -57,18 +57,35 @@ def home():
             features_scaled=scaler.transform(features)
             # 5. Make Prediction
             prediction = model.predict(features_scaled)
-            probability = model.predict_proba(features_scaled)[0][1]
+            probability = model.predict_proba(features_scaled)[0][1] # Probability of CLASS 1 (Approved)
+
             # 6. Format the Result
+            # We will pass structured data to the template for better UI handling
             if prediction[0] == 1:
-                prediction_text = f"✅ Approved! (Probability: {probability:.2%})"
+                prediction_label = "Approved"
+                prediction_class = "safe"
+                # If approved, score is high (probability of 1)
+                prediction_score = round(probability * 100) 
             else:
-                prediction_text = f"⚠️ High Risk - Likely to Default (Probability: {1-probability:.2%})"
+                prediction_label = "High Risk"
+                prediction_class = "risk"
+                # If risk, score is low (probability of 1 is low)
+                # Or we can show "Risk Score" where high is bad. 
+                # Let's stick to "Credit Score / Safety Score" where 100 is good.
+                prediction_score = round(probability * 100)
 
         except Exception as e:
-            prediction_text = f"Error: {str(e)}"
+            prediction_label = "Error"
+            prediction_class = "error"
+            prediction_score = 0
+            prediction_text = str(e) # Fallback for error message
 
-    # Render the HTML page and pass the prediction text to it
-    return render_template('index.html', prediction_result=prediction_text)
+    # Render the HTML page and pass structured data
+    return render_template('index.html', 
+                           prediction_text=prediction_text if 'prediction_text' in locals() else None,
+                           result_label=prediction_label if 'prediction_label' in locals() else None,
+                           result_class=prediction_class if 'prediction_class' in locals() else None,
+                           result_score=prediction_score if 'prediction_score' in locals() else None)
 if __name__=='__main__':
     app.run(debug=True)
 
