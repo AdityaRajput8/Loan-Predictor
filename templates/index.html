@@ -4,117 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Prediction AI</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; }
-        .card { border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .header-title { color: #2c3e50; font-weight: bold; }
-        .result-box { margin-top: 20px; padding: 15px; border-radius: 10px; font-weight: bold; text-align: center;}
-        .result-safe { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .result-risk { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card p-4">
-                <h2 class="text-center header-title mb-4">💰 Loan Repayment Predictor</h2>
-                <p class="text-center text-muted">Enter applicant details to assess credit risk.</p>
+<div class="main-wrapper">
+    <div class="dashboard-grid">
+        
+        <!-- Left Column: Input Form -->
+        <div class="card form-card">
+            <header class="card-header">
+                <h2 class="header-title">
+                    <i data-lucide="calculator" class="icon-lg"></i> Loan Predictor
+                </h2>
+                <p class="header-subtitle">AI-powered credit risk assessment</p>
+            </header>
+            
+            <form action="/" method="POST" class="auth-form" id="predictionForm">
                 
-                <form action="/" method="POST">
-                    
-                    <h5 class="text-primary mt-3">👤 Personal Info</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
+                <section class="form-section">
+                    <h5 class="section-title"><i data-lucide="user" class="icon-sm"></i> Personal Info</h5>
+                    <div class="grid-row">
+                        <div class="input-group">
                             <label>Age</label>
-                            <input type="number" name="age" class="form-control" required value="30">
+                            <input type="number" name="age" class="input-field" required value="30">
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="input-group">
                             <label>Gender</label>
-                            <select name="gender" class="form-select">
+                            <select name="gender" class="input-field">
                                 <option value="1">Male</option>
                                 <option value="0">Female</option>
                                 <option value="2">Other</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="input-group">
                             <label>Marital Status</label>
-                            <select name="marital" class="form-select">
+                            <select name="marital" class="input-field">
                                 <option value="1">Married</option>
                                 <option value="2">Single</option>
                                 <option value="0">Divorced</option>
                             </select>
                         </div>
                     </div>
+                </section>
 
-                    <h5 class="text-primary mt-3">💳 Financial Status</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
+                <section class="form-section">
+                    <h5 class="section-title"><i data-lucide="wallet" class="icon-sm"></i> Financial Status</h5>
+                    <div class="grid-row">
+                        <div class="input-group">
                             <label>Annual Income ($)</label>
-                            <input type="number" name="annual_income" class="form-control" value="60000">
+                            <input type="number" name="annual_income" class="input-field" value="60000">
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="input-group">
                             <label>Monthly Income ($)</label>
-                            <input type="number" name="monthly_income" class="form-control" value="5000">
+                            <input type="number" name="monthly_income" class="input-field" value="5000">
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="input-group">
                             <label>Credit Score</label>
-                            <input type="number" name="credit_score" class="form-control" value="700">
+                            <input type="number" name="credit_score" class="input-field" value="700">
                         </div>
                     </div>
+                </section>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>Education Level</label>
-                            <select name="education" class="form-select">
+                <section class="form-section">
+                    <div class="grid-row two-col">
+                        <div class="input-group">
+                            <label>Education</label>
+                            <select name="education" class="input-field">
                                 <option value="1">Bachelor's</option>
                                 <option value="4">Master's</option>
                                 <option value="3">High School</option>
                                 <option value="0">Associate</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Employment Status</label>
-                            <select name="employment" class="form-select">
+                        <div class="input-group">
+                            <label>Employment</label>
+                            <select name="employment" class="input-field">
                                 <option value="0">Employed</option>
                                 <option value="2">Self-Employed</option>
                                 <option value="3">Unemployed</option>
                             </select>
                         </div>
                     </div>
+                </section>
 
-                    <input type="hidden" name="dti" value="0.3">
-                    <input type="hidden" name="loan_amount" value="15000">
-                    <input type="hidden" name="loan_purpose" value="1">
-                    <input type="hidden" name="interest_rate" value="10.0">
-                    <input type="hidden" name="loan_term" value="36">
-                    <input type="hidden" name="installment" value="450">
-                    <input type="hidden" name="grade" value="1">
-                    <input type="hidden" name="open_acc" value="5">
-                    <input type="hidden" name="total_limit" value="20000">
-                    <input type="hidden" name="current_balance" value="5000">
-                    <input type="hidden" name="delinq_hist" value="0">
-                    <input type="hidden" name="public_records" value="0">
-                    <input type="hidden" name="num_delinq" value="0">
+                <!-- Hidden Fields -->
+                <input type="hidden" name="dti" value="0.3">
+                <input type="hidden" name="loan_amount" value="15000">
+                <input type="hidden" name="loan_purpose" value="1">
+                <input type="hidden" name="interest_rate" value="10.0">
+                <input type="hidden" name="loan_term" value="36">
+                <input type="hidden" name="installment" value="450">
+                <input type="hidden" name="grade" value="1">
+                <input type="hidden" name="open_acc" value="5">
+                <input type="hidden" name="total_limit" value="20000">
+                <input type="hidden" name="current_balance" value="5000">
+                <input type="hidden" name="delinq_hist" value="0">
+                <input type="hidden" name="public_records" value="0">
+                <input type="hidden" name="num_delinq" value="0">
 
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg">🚀 Predict Risk</button>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="btn-text">Run Prediction</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Right Column: Analysis Panel -->
+        <div class="card analysis-card">
+            <header class="card-header align-left">
+                <h2 class="header-title title-sm">
+                    <i data-lucide="activity" class="icon-md"></i> Risk Analysis
+                </h2>
+                <p class="header-subtitle">Real-time model output</p>
+            </header>
+            
+            <div class="analysis-content">
+                {% if result_label %}
+                    <div class="gauge-container {{ result_class }}">
+                        <!-- SVG Gauge -->
+                        <div class="gauge">
+                            <div class="gauge-body">
+                                <div class="gauge-fill" style="--angle: {{ result_score * 1.8 }}deg;"></div>
+                                <div class="gauge-cover">
+                                    <span class="score-text">{{ result_score }}<span class="score-sub">/100</span></span>
+                                    <span class="score-label">Trust Score</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-badge {{ result_class }}">
+                            {% if result_class == 'safe' %}
+                                <i data-lucide="check-circle" class="icon-sm"></i>
+                            {% else %}
+                                <i data-lucide="alert-triangle" class="icon-sm"></i>
+                            {% endif %}
+                            {{ result_label }}
+                        </div>
                     </div>
-
-                </form>
-
-                {% if prediction_result %}
-                    <div class="result-box {% if 'Approved' in prediction_result %}result-safe{% else %}result-risk{% endif %}">
-                        <h3>{{ prediction_result }}</h3>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="pulse-ring"></div>
+                        <p>Awaiting Data...</p>
+                        <span class="sub-text">Fill the form to analyze risk</span>
                     </div>
                 {% endif %}
-
             </div>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-label">Model</span>
+                    <span class="stat-val">XGBoost v2</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Latency</span>
+                    <span class="stat-val">~45ms</span>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </div>
+
+<!-- Icons Script -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+    
+    // Simple loading state
+    const form = document.getElementById('predictionForm');
+    const btn = document.getElementById('submitBtn');
+    
+    if(form) {
+        form.addEventListener('submit', function() {
+            btn.classList.add('loading');
+        });
+    }
+</script>
 
 </body>
 </html>
