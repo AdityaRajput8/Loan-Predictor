@@ -87,5 +87,7 @@ def home():
                            result_class=prediction_class if 'prediction_class' in locals() else None,
                            result_score=prediction_score if 'prediction_score' in locals() else None)
 if __name__=='__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
+    
 
